@@ -1,0 +1,9 @@
+Do you know what your team actually worked on this week?
+
+Hi {{firstName}},
+
+I’m building an AI tool that analyzes Slack conversations and generates a report showing what teams are actually working on.
+
+Looking for a few teams to test it and give feedback.
+
+Interested?

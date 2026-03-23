@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "LinkedIn Company Scanner",
+  "version": "1.0",
+  "description": "Scan company sizes on LinkedIn jobs",
+  "permissions": ["activeTab", "scripting", "sidePanel","clipboardWrite"],
+  "host_permissions": ["https://www.linkedin.com/*","https://crm-production-be92.up.railway.app/*"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "side_panel": {
+    "default_path": "panel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/*","https://www.linkedin.com/in/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["template.txt"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
