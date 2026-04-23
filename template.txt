@@ -1,9 +1,7 @@
-Do you know what your team actually worked on this week?
-
 Hi {{firstName}},
 
-I’m building an AI tool that analyzes Slack conversations and generates a report showing what teams are actually working on.
+Quick question, do you ever feel like it’s hard to actually know what your team is working on or achieving?
 
-Looking for a few teams to test it and give feedback.
+Like in meetings everyone gives updates, but it’s still kind of unclear what’s really moving forward vs just sounding busy.
 
-Interested?
+Curious if that resonates at all?

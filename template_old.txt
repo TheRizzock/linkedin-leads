@@ -1,0 +1,7 @@
+Hi {{firstName}},
+
+I’m building a tool that analyzes team comms and shows what people are actually working on.
+
+Testing it with a few teams for free in exchange for feedback.
+
+Open to a quick 20–30 min call?

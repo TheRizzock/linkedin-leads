@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LinkedIn CRM</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .page-header h1 { font-size: 17px; font-weight: 700; }
+    .page-header .subtitle { font-size: 13px; color: #64748b; margin-left: auto; }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 10px 24px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-bar select,
+    .filter-bar input[type="text"] {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #e2e8f0;
+      padding: 5px 10px;
+      font-size: 13px;
+      outline: none;
+    }
+    .filter-bar select:focus,
+    .filter-bar input:focus { border-color: #3b82f6; }
+    .filter-bar label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #94a3b8;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .filter-sep {
+      width: 1px;
+      height: 20px;
+      background: #334155;
+      margin: 0 2px;
+    }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead th {
+      text-align: left;
+      padding: 10px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #64748b;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      white-space: nowrap;
+    }
+    thead th.sortable { cursor: pointer; user-select: none; }
+    thead th.sortable:hover { color: #94a3b8; }
+    thead th.sort-active { color: #e2e8f0; }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid #1e293b;
+      vertical-align: middle;
+    }
+    tbody tr:hover td { background: #1e293b; cursor: pointer; }
+    tbody tr:last-child td { border-bottom: none; }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-valid      { background: #14532d; color: #86efac; }
+    .badge-invalid    { background: #7f1d1d; color: #fca5a5; }
+    .badge-catch-all  { background: #713f12; color: #fde68a; }
+    .badge-unknown    { background: #1e293b; color: #94a3b8; }
+
+    /* ── Pagination ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      border-top: 1px solid #334155;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .pagination button {
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: none;
+      background: #334155;
+      color: #e2e8f0;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .pagination button:disabled {
+      background: #1e293b;
+      color: #475569;
+      cursor: default;
+    }
+
+    /* ── Contact detail ── */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .detail-card {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .detail-card.full { grid-column: 1 / -1; }
+    .detail-card h3 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #64748b;
+      margin-bottom: 14px;
+    }
+    .detail-row {
+      display: flex;
+      gap: 12px;
+      padding: 7px 0;
+      border-bottom: 1px solid #334155;
+      font-size: 13px;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { color: #64748b; width: 120px; flex-shrink: 0; }
+
+    /* ── Misc ── */
+    /* ── Nav tabs ── */
+    .crm-tab {
+      padding: 6px 16px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      color: #64748b;
+      transition: background 0.15s, color 0.15s;
+    }
+    .crm-tab:hover { background: #334155; color: #e2e8f0; }
+    .crm-tab-active { background: #22c55e !important; color: white !important; }
+    .page-header .subtitle { font-size: 13px; color: #64748b; margin-left: auto; }
+
+    .btn-back {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0;
+    }
+    .btn-back:hover { color: #94a3b8; }
+    .btn-linkedin {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 8px;
+      background: #3b82f6;
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .empty { padding: 60px 24px; text-align: center; color: #475569; }
+    .error-box {
+      margin: 24px;
+      padding: 14px 18px;
+      background: #7f1d1d;
+      color: #fca5a5;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module" src="crm.js"></script>
+</body>
+</html>
